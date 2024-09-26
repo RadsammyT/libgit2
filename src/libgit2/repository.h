@@ -102,6 +102,12 @@ typedef enum {
 	/* core.trustctime */
 	GIT_TRUSTCTIME_DEFAULT = GIT_CONFIGMAP_TRUE,
 	/* core.abbrev */
+	GIT_ABBREV_AUTO = 1,
+#ifdef GIT_EXPERIMENTAL_SHA256
+	GIT_ABBREV_NO = 128,
+#else
+	GIT_ABBREV_NO = 40,
+#endif
 	GIT_ABBREV_DEFAULT = 7,
 	/* core.precomposeunicode */
 	GIT_PRECOMPOSE_DEFAULT = GIT_CONFIGMAP_FALSE,

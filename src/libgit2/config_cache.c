@@ -11,6 +11,7 @@
 #include "repository.h"
 #include "config.h"
 #include "git2/config.h"
+#include "util.h"
 #include "vector.h"
 #include "filter.h"
 
@@ -64,6 +65,18 @@ static git_configmap _configmap_logallrefupdates[] = {
 	{GIT_CONFIGMAP_STRING, "always", GIT_LOGALLREFUPDATES_ALWAYS},
 };
 
+static git_configmap _configmap_abbrev[] = {
+	/*
+	 * Integer in this case must be in range [4, 40] for SHA1.
+	 * SHA256 caps out at 128 characers.
+	 */
+	{GIT_CONFIGMAP_INT32, NULL, 0},
+	{GIT_CONFIGMAP_STRING, "auto", GIT_ABBREV_AUTO},
+	{GIT_CONFIGMAP_STRING, "false", GIT_ABBREV_NO},
+	{GIT_CONFIGMAP_STRING, "off", GIT_ABBREV_NO},
+	{GIT_CONFIGMAP_STRING, "no", GIT_ABBREV_NO},
+};
+
 /*
  * Generic map for integer values
  */
@@ -79,7 +92,7 @@ static struct map_data _configmaps[] = {
 	{"core.filemode", NULL, 0, GIT_FILEMODE_DEFAULT },
 	{"core.ignorestat", NULL, 0, GIT_IGNORESTAT_DEFAULT },
 	{"core.trustctime", NULL, 0, GIT_TRUSTCTIME_DEFAULT },
-	{"core.abbrev", _configmap_int, 1, GIT_ABBREV_DEFAULT },
+	{"core.abbrev", _configmap_abbrev, ARRAY_SIZE(_configmap_abbrev), GIT_ABBREV_DEFAULT },
 	{"core.precomposeunicode", NULL, 0, GIT_PRECOMPOSE_DEFAULT },
 	{"core.safecrlf", _configmap_safecrlf, ARRAY_SIZE(_configmap_safecrlf), GIT_SAFE_CRLF_DEFAULT},
 	{"core.logallrefupdates", _configmap_logallrefupdates, ARRAY_SIZE(_configmap_logallrefupdates), GIT_LOGALLREFUPDATES_DEFAULT},
